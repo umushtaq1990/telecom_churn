@@ -1,2 +1,3 @@
-# telecom_churn
-Telecom Churn Model
+# Telecom Churn Analysis
+
+In this project telecom customers data is analysed (EDA) and churn prediction model is generated.
