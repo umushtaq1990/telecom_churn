@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import math
 from decimal import Decimal
+from configparser import ConfigParser
 from scipy.stats import chi2_contingency
 from scipy import stats
 from sklearn.metrics import mutual_info_score
@@ -40,17 +41,16 @@ def Plot_Bar_Mit_Num_Per(DF, COLUMN_NAME, AXIS, TITLE):
     for p in AXIS.patches:
         AXIS.annotate(str(p.get_height())+'  ->  '+str(round(Decimal(p.get_height()/DF.shape[0]),2)), (p.get_x(), p.get_height()))
 
-def Per_Stacked_Bar_Plot(columns_to_plot, super_title):
+def Per_Stacked_Bar_Plot_Cat_Feats(DF, COLS_TO_PLOT, MAIN_TITLE):
     number_of_columns = 2
-    number_of_rows = math.ceil(len(columns_to_plot)/2)
+    number_of_rows = math.ceil(len(COLS_TO_PLOT)/2)
     fig = plt.figure(figsize=(12, 5 * number_of_rows)) 
-    fig.suptitle(super_title, fontsize=22,  y=.95)
-    for index, column in enumerate(columns_to_plot, 1):
+    fig.suptitle(MAIN_TITLE, fontsize=22,  y=.95)
+    for index, column in enumerate(COLS_TO_PLOT, 1):
         ax = fig.add_subplot(number_of_rows, number_of_columns, index)
-        prop_by_independent = pd.crosstab(df[column], df['churn']).apply(lambda x: x/x.sum()*100, axis=1)
+        prop_by_independent = pd.crosstab(DF[column], DF['churn']).apply(lambda x: x/x.sum()*100, axis=1)
         prop_by_independent.plot(kind='bar', ax=ax, stacked=True,rot=0, color=['navy','salmon'])
         ax.legend(loc="upper right", bbox_to_anchor=(0.62, 0.5, 0.5, 0.5), title='Churn', fancybox=True)
-        #ax.set_title('Proportion of observations by ' + column, fontsize=16, loc='left')
         ax.tick_params(rotation='auto')
         spine_names = ('top', 'right', 'bottom', 'left')
         for spine_name in spine_names:
@@ -141,11 +141,28 @@ def Convert_Cat_Feats(DF):
     DF['churn'] = DF['churn'].map({False:0,True:1})
     return DF
 
-def Scale_Num_Feats(DF, COLS_LIST):
+def Scale_Num_Feats_Train(DF, COLS_LIST):       
+    config_object = ConfigParser()             # store scaling values of each feat in confg file to later used for pred on unseen data
+    num_dict = {}
     for column in COLS_LIST:
         min_column = DF[column].min()
         max_column = DF[column].max()
-        DF[column] = (DF[column] - min_column) / (max_column - min_column) 
+        DF[column] = (DF[column] - min_column) / (max_column - min_column)
+        num_dict.update({column:[min_column,max_column]}) 
+    print(num_dict)
+    config_object['NUM_FEATS'] = num_dict
+    with open('config.ini', 'w') as conf:
+        config_object.write(conf)
+    return DF
+
+def Scale_Num_Feats_Pred(DF, COLS_LIST):              # scaling for each feat to be read from config file where values were stored during training
+    config_object = ConfigParser()
+    config_object.read("config.ini")
+    num_feats_scale = config_object["NUM_FEATS"]
+    for column in COLS_LIST:
+        min_column = int(float(num_feats_scale[column].replace("[",'').replace("]",'').split(',')[0]))
+        max_column = int(float(num_feats_scale[column].replace("[",'').replace("]",'').split(',')[1]))
+        DF[column] = (DF[column] - min_column) / (max_column - min_column)
     return DF
 
 def create_models(seed=2):
