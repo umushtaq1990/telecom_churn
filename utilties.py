@@ -141,6 +141,15 @@ def Convert_Cat_Feats(DF):
     DF['churn'] = DF['churn'].map({False:0,True:1})
     return DF
 
+def ADD_PATH_CONFIG(CONFIG_OBJ):
+    path_dict = {'model' : 'model/RF_V001.pkl', 
+                'data' : 'data/df_validation.pkl', 
+                'feats':['vmail', 'international calls', 'total day calls', 'Call day minutes','international minutes', 
+                'Duration', 'eve calls', 'night minutes','night calls', 'eve minutes', 'gender', 'SeniorCitizen',
+                'Product: International', 'Product: Voice mail', 'Phone Code','PaperlessBilling', 'service calls', 'churn']}
+    CONFIG_OBJ['PATH'] = path_dict
+    return CONFIG_OBJ
+
 def Scale_Num_Feats_Train(DF, COLS_LIST):       
     config_object = ConfigParser()             # store scaling values of each feat in confg file to later used for pred on unseen data
     num_dict = {}
@@ -149,7 +158,7 @@ def Scale_Num_Feats_Train(DF, COLS_LIST):
         max_column = DF[column].max()
         DF[column] = (DF[column] - min_column) / (max_column - min_column)
         num_dict.update({column:[min_column,max_column]}) 
-    print(num_dict)
+    ADD_PATH_CONFIG(config_object)
     config_object['NUM_FEATS'] = num_dict
     with open('config.ini', 'w') as conf:
         config_object.write(conf)
