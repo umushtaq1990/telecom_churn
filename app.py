@@ -1,6 +1,3 @@
-"""
-A sample Hello World server.
-"""
 import os,sys
 import pandas as pd
 from flask import Flask, render_template
