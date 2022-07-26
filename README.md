@@ -5,7 +5,7 @@ This project could be divided into three parts:
 - Machine learning models training and evaluation done in Adhoc_Analysis.ipynb file
 - Falsk API deployment on Microsoft Azure / Code checkedin on github
 
-As far as directory structure is concerned *data* folder contains validation and training datasets. *model* folder contains RF model as pickle file. 
+As far as directory structure is concerned *data* folder contains validation and training datasets. *model* folder contains RF model as pickle file.*img* folder contains deployment results picture from Azure.
 In *Adhoc_Analysis.ipynb* all steps from EDA till Machine Learning model generation are performed.
 *app.py* contains flask app module to get churn prediction results for given customer ID.
 *get_pred.py* is used to get predictions once model is available.
@@ -23,6 +23,6 @@ Note : utilties.py file is required for this module where all necessary function
 Here different models are used to predict churn customers. After looking at intial results RF model is selcted for further hyperparameter tuning to get better results. RF Model is saved as pickle file under model folder once satisfing results are available.
 These steps are performed in *Adhoc_Analysis.ipynb* file.
 
-## ML Model deployment
-Model is deployed as flask web application on Microsoft Azure. Intially all code is commited to github *https://github.com/umushtaq1990/telecom_churn* , than it is deployed to cloud enviornment. 
+## Model deployment
+Model is deployed as flask web application on Microsoft Azure. Intially all code is commited to github *https://github.com/umushtaq1990/telecom_churn* , than it is deployed to cloud enviornment. *img* folder contains the pictures showing deployment status on Azure.
 
