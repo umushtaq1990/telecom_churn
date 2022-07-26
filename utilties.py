@@ -236,3 +236,11 @@ def Get_RF_Model_Feat_Importance(MODEL, FEATS, NUM_FEAT):
     plt.subplots_adjust(bottom=0.3)
     plt.ion()
     plt.show()
+
+
+def Generate_Wieghted_Num_Feats(DF, FEAT):
+    df_state_mean = DF.groupby(['US State'])[FEAT].agg([np.mean]).sort_values(by='mean', ascending=False)
+    df_feat_mean = DF[['customerID',FEAT,'US State']].merge(df_state_mean, on='US State')
+    df_feat_mean[f'w_{FEAT}'] = df_feat_mean[FEAT]/df_feat_mean['mean']
+    DF = DF.merge(df_feat_mean[['customerID',f'w_{FEAT}']], on='customerID')
+    return DF
