@@ -13,6 +13,7 @@ In *Adhoc_Analysis.ipynb* all steps from EDA till Machine Learning model generat
 *config.ini* contains configuration parameters, e.g: paths, numeric variables scaling
 *requirements.txt* contains all packages required to build image
 *Dockerfile* contain all steps to generate docker image. 
+*unit_tests.py* contains all unittest, this need to be run in continuous integration and continuous deployment pipeline to check if realse is stable
 
 ## EDA
 In this part numeric and categorical features distribution is analysed and statistical tests are used to check each feature
