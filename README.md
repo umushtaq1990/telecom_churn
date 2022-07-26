@@ -26,3 +26,9 @@ These steps are performed in *Adhoc_Analysis.ipynb* file.
 ## Model deployment
 Model is deployed as flask web application on Microsoft Azure. Intially all code is commited to github *https://github.com/umushtaq1990/telecom_churn* , than it is deployed to cloud enviornment. *img* folder contains the pictures showing deployment status on Azure.
 
+
+## Docker Image
+Build docker image: 
+- docker build -t telecom_churn:v003 -f Dockerfile .
+Run docker image: 
+- docker run -d -p 9090:9090 telecom_churn:v003

@@ -13,14 +13,16 @@ def Get_Data(ID, FILE_PATH):
     df = df.loc[df.customerID==ID]
     print('df',df)
     # TODO read feats list from config file
-    cat_feats = ['gender', 'SeniorCitizen', 'Product: International', 'Product: Voice mail','Phone Code','PaperlessBilling','service calls','churn'] #categorical
-    num_feats = list(set(df.columns)-set(['customerID','Telephone Number', 'US State']+cat_feats))   # get numeric feats
-    num_feats = list(set(num_feats)-set(['Total, EUR', 'eve EUR', 'night EUR', 'internatonal EUR']))   # remove highly correlated numeric feats
+    feats = ['Duration', 'night calls', 'total day calls', 'international minutes','night minutes', 'Call day minutes', 'eve calls', 
+    'vmail','international calls', 'eve minutes', 'gender', 'SeniorCitizen','Product: International', 'Product: Voice mail', 'Phone Code',
+    'PaperlessBilling', 'service calls','churn']  # should be same pattern as in training
+    num_feats = ['Duration','night calls','total day calls','international minutes','night minutes','Call day minutes','eve calls','vmail',
+    'international calls','eve minutes']          # should be same as during training
     df = df.set_index('customerID')
-    df = df[num_feats+cat_feats]
+    df = df[feats]
     df = Convert_Cat_Feats(df)
     df = Scale_Num_Feats_Pred(df, num_feats)
-    return df
+    return df[feats]
 
 def Get_Pred(DF, MODEL_FILE):
     load_model = pickle.load(open(f'{MODEL_FILE}', 'rb')) 
