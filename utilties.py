@@ -244,3 +244,13 @@ def Generate_Wieghted_Num_Feats(DF, FEAT):
     df_feat_mean[f'w_{FEAT}'] = df_feat_mean[FEAT]/df_feat_mean['mean']
     DF = DF.merge(df_feat_mean[['customerID',f'w_{FEAT}']], on='customerID')
     return DF
+    
+    
+def Val_Pred(DF, MODEL):
+    x_data = DF.drop(columns='churn')
+    y_data = DF.loc[:, 'churn']
+    pred = MODEL.predict(x_data)
+    print("Recall for our model is:" , round(metrics.recall_score(y_data, pred),2))
+    print("Accuracy on test set is:" , round(metrics.accuracy_score(y_data, pred),2))
+    print(confusion_matrix(y_data,pred))
+    print(classification_report(y_data,pred))
