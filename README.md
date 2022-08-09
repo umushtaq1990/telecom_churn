@@ -1,12 +1,14 @@
 # Telecom Churn Analysis
 
-This project could be divided into three parts:
+This project could be divided into four parts:
 - Exploratray data analysis (EDA) results available in Adhoc_Analysis.ipynb file
+- Customer segments analysis using KMEANS, PCA, TSNE to get to know more about user groups.
 - Machine learning models training and evaluation done in ML_Model_Train.ipynb file
 - Falsk API deployment on Microsoft Azure / Code checkedin on github
 
 As far as directory structure is concerned *data* folder contains validation and training datasets. *model* folder contains RF model as pickle file.*img* folder contains deployment results picture from Azure.
 *Adhoc_Analysis.ipynb* contain EDA results till feature engineering
+*ClusterAnalysis.ipynb* contains cluster or segments analysis for customers
 *ML_Model_Train.ipynb* contains Machine Learning model generation, tuning results
 *app.py* contains flask app module to get churn prediction results for given customer ID.
 *get_pred.py* is used to get predictions once model is available.
